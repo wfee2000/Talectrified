@@ -1,0 +1,12 @@
+{
+  "Group": "${group}",
+  "Name": "${name}",
+  "Version": "${version}",
+  "Authors": [
+    {
+      "Name": "${author}"
+    }
+  ],
+  "Main": "${main_entrypoint}",
+  "IncludesAssetPack": true
+}
