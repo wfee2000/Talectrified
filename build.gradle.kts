@@ -7,6 +7,7 @@ version = "0.0.1"
 
 repositories {
     mavenCentral()
+    maven ("https://cursemaven.com")
 }
 
 val hytalePath = System.getenv("HOME") + "/.local/share/Hytale"
@@ -20,6 +21,7 @@ dependencies {
     } else {
         logger.error("Hytale Installation not found! ${file(installation).absolutePath}")
     }
+    implementation("curse.maven:Enertalic-1435032:7555076")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
