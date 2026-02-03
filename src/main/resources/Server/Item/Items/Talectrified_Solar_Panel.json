@@ -5,6 +5,24 @@
   "MaxStack": 100,
   "PlayerAnimationsId": "Block",
   "BlockType": {
+    "BlockEntity":{
+      "Components": {
+        "Talectrified:SolarPanel": {
+          "MaxGeneration": 1000
+        },
+        "Enertalic:EnergyNode": {
+          "MaxEnergy": 500000,
+          "EnergySideConfig": {
+            "East": 3,
+            "West": 3,
+            "Up": 3,
+            "Down": 1,
+            "North": 3,
+            "South": 3
+          }
+        }
+      }
+    },
     "HitboxType": "Block_Half",
     "DrawType": "Model",
     "CustomModel": "Blocks/SolarPanel/model.blockymodel",
@@ -22,6 +40,7 @@
       }
     }
   },
+  "Icon": "Icons/ItemsGenerated/Talectrified_Solar_Panel.png",
   "IconProperties": {
     "Scale": 0.6,
     "Rotation": [

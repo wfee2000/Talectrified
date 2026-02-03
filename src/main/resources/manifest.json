@@ -7,6 +7,9 @@
       "Name": "${author}"
     }
   ],
+  "Dependencies": {
+    "com.wfee:Enertalic": "~0.1.1"
+  },
   "Main": "${main_entrypoint}",
   "IncludesAssetPack": true
 }

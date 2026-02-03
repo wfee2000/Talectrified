@@ -8,7 +8,9 @@ import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
 import com.hypixel.hytale.math.util.ChunkUtil;
 import com.hypixel.hytale.math.vector.Vector3i;
+import com.hypixel.hytale.protocol.Opacity;
 import com.hypixel.hytale.server.core.asset.type.blocktick.BlockTickStrategy;
+import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
@@ -25,7 +27,7 @@ public class SolarPanelTickingSystem extends EntityTickingSystem<ChunkStore> {
     private final Query<ChunkStore> query;
 
     public SolarPanelTickingSystem() {
-        this.query = Query.and(SolarPanelComponent.getComponentType(), EnergyNode.getComponentType());
+        this.query = Query.and(BlockSection.getComponentType(), ChunkSection.getComponentType());
     }
 
     @Override
@@ -98,7 +100,9 @@ public class SolarPanelTickingSystem extends EntityTickingSystem<ChunkStore> {
         while (position.y < 320) {
             position.y++;
 
-            if (world.getBlockType(position) != null) {
+            BlockType blockType = world.getBlockType(position);
+
+            if (blockType != null && blockType.getOpacity() != Opacity.Transparent) {
                 return true;
             }
         }

@@ -21,7 +21,7 @@ dependencies {
     } else {
         logger.error("Hytale Installation not found! ${file(installation).absolutePath}")
     }
-    implementation("curse.maven:Enertalic-1435032:7555076")
+    compileOnly("curse.maven:Enertalic-1435032:7555076")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
