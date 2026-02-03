@@ -1,0 +1,37 @@
+{
+  "TranslationProperties": {
+    "Name": "items.Talectrified_Solar_Panel.name"
+  },
+  "MaxStack": 100,
+  "PlayerAnimationsId": "Block",
+  "BlockType": {
+    "HitboxType": "Block_Half",
+    "DrawType": "Model",
+    "CustomModel": "Blocks/SolarPanel/model.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "BlockTextures/Talectrified_Solar_Panel.png",
+        "Weight": 1
+      }
+    ],
+    "Material": "Solid",
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Rocks",
+        "ItemId": "Talectrified_Solar_Panel"
+      }
+    }
+  },
+  "IconProperties": {
+    "Scale": 0.6,
+    "Rotation": [
+      25,
+      50,
+      25
+    ],
+    "Translation": [
+      0,
+      -4
+    ]
+  }
+}
