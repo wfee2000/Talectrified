@@ -11,6 +11,7 @@ import com.hypixel.hytale.math.vector.Vector3i;
 import com.hypixel.hytale.protocol.Opacity;
 import com.hypixel.hytale.server.core.asset.type.blocktick.BlockTickStrategy;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
+import com.hypixel.hytale.server.core.modules.time.WorldTimeResource;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.chunk.BlockComponentChunk;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
@@ -92,8 +93,10 @@ public class SolarPanelTickingSystem extends EntityTickingSystem<ChunkStore> {
     }
 
     private double getSunlightModificator(World world) {
-        // TODO: get sun mod
-        return 0.5;
+        return world.getEntityStore()
+                .getStore()
+                .getResource(WorldTimeResource.getResourceType())
+                .getSunlightFactor();
     }
 
     private boolean isPositionShaded(Vector3i position, World world) {
