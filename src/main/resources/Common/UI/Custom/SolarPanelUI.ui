@@ -1,0 +1,12 @@
+Group {
+    Background: #ffffff;
+    LayoutMode: Top;
+    Anchor: (Width: 400, Height: 300);
+    TextButton #EnergyConfigButton {
+        Background: #125689;
+        Text: "Energy";
+    }
+    Label #EnergyDisplay {
+        Background: #4f4f4f;
+    }
+}

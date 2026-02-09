@@ -38,6 +38,15 @@
         "GatherType": "Rocks",
         "ItemId": "Talectrified_Solar_Panel"
       }
+    },
+    "Interactions": {
+      "Use": {
+        "Interactions": [
+          {
+            "Type": "Display_Solar_Panel_Information"
+          }
+        ]
+      }
     }
   },
   "Icon": "Icons/ItemsGenerated/Talectrified_Solar_Panel.png",

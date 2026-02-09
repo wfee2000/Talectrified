@@ -24,6 +24,7 @@ public class SolarPanelComponent implements Component<ChunkStore> {
 
 
     private long maxGeneration = 0;
+    private long lastGeneration = 0;
 
     public static ComponentType<ChunkStore, SolarPanelComponent> getComponentType() {
         return Talectrified.get().getSolarPanelComponentType();
@@ -47,5 +48,13 @@ public class SolarPanelComponent implements Component<ChunkStore> {
         SolarPanelComponent solarPanelComponent = (SolarPanelComponent) base;
         solarPanelComponent.maxGeneration = maxGeneration;
         return solarPanelComponent;
+    }
+
+    public long getLastGeneration() {
+        return lastGeneration;
+    }
+
+    public void setLastGeneration(long lastGeneration) {
+        this.lastGeneration = lastGeneration;
     }
 }

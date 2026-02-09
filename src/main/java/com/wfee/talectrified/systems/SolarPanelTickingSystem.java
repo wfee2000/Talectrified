@@ -79,6 +79,7 @@ public class SolarPanelTickingSystem extends EntityTickingSystem<ChunkStore> {
 
     private void computeBlock(float dt, Vector3i position, SolarPanelComponent solarPanel, EnergyNode energyNode, World world) {
         if (isPositionShaded(position, world)) {
+            solarPanel.setLastGeneration(0);
             return;
         }
 
@@ -89,6 +90,7 @@ public class SolarPanelTickingSystem extends EntityTickingSystem<ChunkStore> {
                 (long)(dt * solarPanel.getMaxGeneration() * sunModificator)
         );
 
+        solarPanel.setLastGeneration((long)(generated / dt));
         energyNode.addEnergy(generated);
     }
 

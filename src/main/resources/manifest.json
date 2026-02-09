@@ -8,7 +8,7 @@
     }
   ],
   "Dependencies": {
-    "com.wfee:Enertalic": "~0.1.1"
+    "com.wfee:Enertalic": "~0.2.0"
   },
   "Main": "${main_entrypoint}",
   "IncludesAssetPack": true
