@@ -12,18 +12,18 @@ import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.wfee.enertalic.components.EnergyNode;
-import com.wfee.enertalic.util.EnergyListener;
-import com.wfee.enertalic.util.EnergyUpdateType;
+import com.wfee.enertalic.util.ReactiveListener;
+import com.wfee.enertalic.util.UpdateType;
 import com.wfee.talectrified.components.SolarPanelComponent;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import javax.annotation.Nonnull;
-import java.util.function.Function;
 
 public class SolarPanelUI extends CustomUIPage {
     private final static HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     private final SolarPanelComponent solarPanel;
     private final EnergyNode node;
+    private ReactiveListener<Long> listener;
 
     public SolarPanelUI(@Nonnull PlayerRef playerRef, EnergyNode node, SolarPanelComponent solarPanel) {
         super(playerRef, CustomPageLifetime.CanDismissOrCloseThroughInteraction);
@@ -33,10 +33,14 @@ public class SolarPanelUI extends CustomUIPage {
 
     @Override
     public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder uiCommandBuilder, @Nonnull UIEventBuilder uiEventBuilder, @Nonnull Store<EntityStore> store) {
-        Function<Long, String> energyText = currentEnergy -> String.format("Energy: %d / %d", currentEnergy, node.getMaxEnergy());
-        node.onEnergyUpdated(new EnergyListener(false, currentEnergy -> updateText(energyText.apply(currentEnergy)), EnergyUpdateType.All));
+        listener = new ReactiveListener<>(
+                false,
+                currentEnergy -> updateText(String.format("Energy: %d / %d", currentEnergy, node.getMaxEnergy())),
+                UpdateType.All
+        );
+
+        node.getCurrentEnergy().observe(listener);
         uiCommandBuilder.append("SolarPanelUI.ui");
-        uiCommandBuilder.set("#EnergyDisplay.Text", energyText.apply(node.getCurrentEnergy()));
         uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#EnergyConfigButton");
     }
 
@@ -50,5 +54,12 @@ public class SolarPanelUI extends CustomUIPage {
         UICommandBuilder uiCommandBuilder = new UICommandBuilder();
         uiCommandBuilder.set("#EnergyDisplay.TextSpans", Message.raw(newText));
         sendUpdate(uiCommandBuilder, false);
+    }
+
+    @Override
+    public void onDismiss(@NonNullDecl Ref<EntityStore> ref, @NonNullDecl Store<EntityStore> store) {
+        if (listener != null) {
+            node.getCurrentEnergy().removeListener(listener);
+        }
     }
 }

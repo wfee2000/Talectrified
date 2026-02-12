@@ -26,6 +26,13 @@ public class SolarPanelComponent implements Component<ChunkStore> {
     private long maxGeneration = 0;
     private long lastGeneration = 0;
 
+    public SolarPanelComponent() {}
+
+    public SolarPanelComponent(SolarPanelComponent solarPanelComponent) {
+       this.maxGeneration = solarPanelComponent.maxGeneration;
+       this.lastGeneration = 0;
+    }
+
     public static ComponentType<ChunkStore, SolarPanelComponent> getComponentType() {
         return Talectrified.get().getSolarPanelComponentType();
     }
@@ -37,17 +44,7 @@ public class SolarPanelComponent implements Component<ChunkStore> {
     @Nullable
     @Override
     public Component<ChunkStore> clone() {
-        Object base;
-
-        try {
-            base = super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
-
-        SolarPanelComponent solarPanelComponent = (SolarPanelComponent) base;
-        solarPanelComponent.maxGeneration = maxGeneration;
-        return solarPanelComponent;
+        return new SolarPanelComponent(this);
     }
 
     public long getLastGeneration() {

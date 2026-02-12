@@ -91,7 +91,7 @@ public class SolarPanelTickingSystem extends EntityTickingSystem<ChunkStore> {
         );
 
         solarPanel.setLastGeneration((long)(generated / dt));
-        energyNode.addEnergy(generated);
+        energyNode.getCurrentEnergy().add(generated);
     }
 
     private double getSunlightModificator(World world) {
