@@ -49,6 +49,6 @@ public class DisplayPanelInformationInteraction extends SimpleInteraction {
         Store<ChunkStore> blockStore = blockEntity.getStore();
         SolarPanelComponent solarPanel = blockStore.getComponent(blockEntity, SolarPanelComponent.getComponentType());
         EnergyNode node = blockStore.getComponent(blockEntity, EnergyNode.getComponentType());
-        player.getPageManager().openCustomPage(owningEntity, store, new SolarPanelUI(playerRef, node, solarPanel));
+        player.getPageManager().openCustomPage(owningEntity, store, new SolarPanelUI(player, playerRef, node, solarPanel));
     }
 }

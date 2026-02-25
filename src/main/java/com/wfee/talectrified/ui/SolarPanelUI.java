@@ -6,6 +6,7 @@ import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.Message;
+import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.CustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
@@ -21,45 +22,58 @@ import javax.annotation.Nonnull;
 
 public class SolarPanelUI extends CustomUIPage {
     private final static HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
+    private final Player player;
     private final SolarPanelComponent solarPanel;
     private final EnergyNode node;
-    private ReactiveListener<Long> listener;
+    private final ReactiveListener<Long> storedListener;
+    private final ReactiveListener<Long> generatedListener;
 
-    public SolarPanelUI(@Nonnull PlayerRef playerRef, EnergyNode node, SolarPanelComponent solarPanel) {
+    public SolarPanelUI(Player player, @Nonnull PlayerRef playerRef, EnergyNode node, SolarPanelComponent solarPanel) {
         super(playerRef, CustomPageLifetime.CanDismissOrCloseThroughInteraction);
+        this.player = player;
         this.node = node;
         this.solarPanel = solarPanel;
+        this.storedListener = new ReactiveListener<>(
+                false,
+                this::updateStoredText,
+                UpdateType.All
+        );
+
+        this.generatedListener = new ReactiveListener<>(
+                false,
+                this::updateGeneratedText,
+                UpdateType.All
+        );
     }
 
     @Override
     public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder uiCommandBuilder, @Nonnull UIEventBuilder uiEventBuilder, @Nonnull Store<EntityStore> store) {
-        listener = new ReactiveListener<>(
-                false,
-                currentEnergy -> updateText(String.format("Energy: %d / %d", currentEnergy, node.getMaxEnergy())),
-                UpdateType.All
-        );
-
-        node.getCurrentEnergy().observe(listener);
+        node.getCurrentEnergy().observe(storedListener);
+        solarPanel.getLastGeneration().observe(generatedListener);
         uiCommandBuilder.append("SolarPanelUI.ui");
         uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#EnergyConfigButton");
     }
 
     @Override
     public void handleDataEvent(@NonNullDecl Ref<EntityStore> ref, @NonNullDecl Store<EntityStore> store, String rawData) {
-        // TODO: show energy config
-        sendUpdate();
+        player.getPageManager().openCustomPage(ref, store, new EnergyConfigUI(playerRef, node));
     }
 
-    public void updateText(String newText) {
+    public void updateStoredText(long currentEnergy) {
         UICommandBuilder uiCommandBuilder = new UICommandBuilder();
-        uiCommandBuilder.set("#EnergyDisplay.TextSpans", Message.raw(newText));
-        sendUpdate(uiCommandBuilder, false);
+        uiCommandBuilder.set("#EnergyStored.TextSpans", Message.raw(String.format("Energy: %d / %d", currentEnergy, node.getMaxEnergy())));
+        sendUpdate(uiCommandBuilder);
+    }
+
+    public void updateGeneratedText(long currentGeneration) {
+        UICommandBuilder uiCommandBuilder = new UICommandBuilder();
+        uiCommandBuilder.set("#EnergyGenerated.TextSpans", Message.raw(String.format("Generating: %d HE/s", currentGeneration)));
+        sendUpdate(uiCommandBuilder);
     }
 
     @Override
     public void onDismiss(@NonNullDecl Ref<EntityStore> ref, @NonNullDecl Store<EntityStore> store) {
-        if (listener != null) {
-            node.getCurrentEnergy().removeListener(listener);
-        }
+        node.getCurrentEnergy().removeListener(storedListener);
+        solarPanel.getLastGeneration().removeListener(generatedListener);
     }
 }

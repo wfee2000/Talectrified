@@ -5,6 +5,7 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.Component;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.server.core.universe.world.storage.ChunkStore;
+import com.wfee.enertalic.util.ReactiveNumericProperty;
 import com.wfee.talectrified.Talectrified;
 
 import javax.annotation.Nullable;
@@ -24,13 +25,13 @@ public class SolarPanelComponent implements Component<ChunkStore> {
 
 
     private long maxGeneration = 0;
-    private long lastGeneration = 0;
+    private ReactiveNumericProperty lastGeneration = new ReactiveNumericProperty(0);
 
     public SolarPanelComponent() {}
 
     public SolarPanelComponent(SolarPanelComponent solarPanelComponent) {
        this.maxGeneration = solarPanelComponent.maxGeneration;
-       this.lastGeneration = 0;
+       this.lastGeneration = new ReactiveNumericProperty(solarPanelComponent.lastGeneration.get());
     }
 
     public static ComponentType<ChunkStore, SolarPanelComponent> getComponentType() {
@@ -47,11 +48,7 @@ public class SolarPanelComponent implements Component<ChunkStore> {
         return new SolarPanelComponent(this);
     }
 
-    public long getLastGeneration() {
+    public ReactiveNumericProperty getLastGeneration() {
         return lastGeneration;
-    }
-
-    public void setLastGeneration(long lastGeneration) {
-        this.lastGeneration = lastGeneration;
     }
 }

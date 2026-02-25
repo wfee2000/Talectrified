@@ -1,0 +1,28 @@
+Group {
+  Background: #000000;
+  LayoutMode: Top;
+  Anchor: (Width: 400, Height: 300);
+  TextButton #Up {
+    Text: "Up";
+  }
+
+  TextButton #Down {
+    Text: "Down";
+  }
+
+  TextButton #West {
+    Text: "West";
+  }
+
+  TextButton #East {
+    Text: "East";
+  }
+
+  TextButton #North {
+    Text: "North";
+  }
+
+  TextButton #South {
+    Text: "South";
+  }
+}
